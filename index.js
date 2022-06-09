@@ -1,25 +1,23 @@
 import { Markup, Telegraf } from "telegraf";
 import {} from "dotenv/config";
 import { commands } from "./const.js";
-import { runGetFuelMapOkko } from "./toolsForOkko/puppeteer.js";
+import { runGetFuelMapOkko } from "./toolsForOkko/fuelMapOkko.js";
 import { runGetFuelMapWog } from "./toolsForWog/fuelMapWog.js";
-import { sort } from "./toolsForOkko/sort.js";
+import { sortFuelOkko } from "./toolsForOkko/sortFuelOkko.js";
+import { sortFuelWog } from "./toolsForWog/sortFuelWog.js";
 import { filterTownOkko } from "./toolsForOkko/filterTownOkko.js";
 import { filterTownWog } from "./toolsForWog/filterTownWog.js";
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
-
-setInterval(async() => {
-  try{
+setInterval(async () => {
+  try {
     await runGetFuelMapOkko();
     await runGetFuelMapWog();
+  } catch (e) {
+    console.error(e);
   }
- catch(e) {
-   console.error(e);
- }
-}
-, 1900000);
+}, 1000 * 60 * 30);
 
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start((ctx) => {
   ctx.reply(
@@ -140,9 +138,107 @@ bot.action("btn_azk_2", async (ctx) => {
 bot.action("btn_wog_1", async (ctx) => {
   try {
     await ctx.answerCbQuery();
-    let listAzk = {}
-    let arr = filterTownWog("Запорожье", ctx)
-    console.log(arr);
+    let arr = filterTownWog("Запоріжжя", ctx);
+    sortFuelWog(arr, ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});
+bot.action("btn_wog_2", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    let arr = filterTownWog("Київ", ctx);
+    sortFuelWog(arr, ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});
+bot.action("btn_wog_3", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    let arr = filterTownWog("Дніпро", ctx);
+    sortFuelWog(arr, ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});
+bot.action("btn_wog_4", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    let arr = filterTownWog("Полтава", ctx);
+    sortFuelWog(arr, ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});
+bot.action("btn_wog_5", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    let arr = filterTownWog("Львів", ctx);
+    sortFuelWog(arr, ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});
+bot.action("btn_wog_6", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    let arr = filterTownWog("Рівне", ctx);
+    sortFuelWog(arr, ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});
+bot.action("btn_wog_7", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    let arr = filterTownWog("Житомир", ctx);
+    sortFuelWog(arr, ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});
+bot.action("btn_wog_8", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    let arr = filterTownWog("Чернігів", ctx);
+    sortFuelWog(arr, ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});
+bot.action("btn_wog_9", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    let arr = filterTownWog("Чернівці", ctx);
+    sortFuelWog(arr, ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});
+bot.action("btn_wog_10", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    let arr = filterTownWog("Одеса", ctx);
+    sortFuelWog(arr, ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});
+bot.action("btn_wog_11", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    let arr = filterTownWog("Хмельницький", ctx);
+    sortFuelWog(arr, ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});
+bot.action("btn_wog_12", async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    let arr = filterTownWog("Миколаїв", ctx);
+    sortFuelWog(arr, ctx);
   } catch (e) {
     console.error(e);
   }
@@ -152,7 +248,7 @@ bot.action("btn_okko_1", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Запоріжжя", ctx);
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";
@@ -165,7 +261,7 @@ bot.action("btn_okko_2", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Київ");
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";
@@ -178,7 +274,7 @@ bot.action("btn_okko_3", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Дніпро");
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";
@@ -191,7 +287,7 @@ bot.action("btn_okko_4", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Полтава");
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";
@@ -204,7 +300,7 @@ bot.action("btn_okko_5", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Львів");
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";
@@ -217,7 +313,7 @@ bot.action("btn_okko_6", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Рівне");
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";
@@ -230,7 +326,7 @@ bot.action("btn_okko_7", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Житомир");
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";
@@ -243,7 +339,7 @@ bot.action("btn_okko_8", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Чернігів");
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";
@@ -256,7 +352,7 @@ bot.action("btn_okko_9", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Чернівці");
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";
@@ -269,7 +365,7 @@ bot.action("btn_okko_10", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Одеса");
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";
@@ -282,7 +378,7 @@ bot.action("btn_okko_11", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Хмельницький");
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";
@@ -295,7 +391,7 @@ bot.action("btn_okko_12", async (ctx) => {
     await ctx.answerCbQuery();
     let fuel_type = [];
     let arr = filterTownOkko("Миколаїв");
-    sort(arr, fuel_type, ctx);
+    sortFuelOkko(arr, fuel_type, ctx);
     fuel_type.length === 0
       ? ctx.replyWithHTML("Паливо відсутнє в цьому місці!")
       : "";

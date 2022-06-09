@@ -1,5 +1,5 @@
-
-export function sort(arr, fuel_type, ctx) { arr.forEach((obj) => {
+export function sortFuelOkko(arr, fuel_type, ctx) {
+  arr.forEach((obj) => {
     obj.attributes.fuel_type.forEach((obj) => {
       fuel_type.push(obj.attributes.name);
     });
