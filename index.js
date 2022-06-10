@@ -27,6 +27,7 @@ bot.start((ctx) => {
         : "Владелец пепелаца"
     }`
   );
+  ctx.reply(commands);
 });
 bot.help((ctx) => ctx.reply(commands));
 
