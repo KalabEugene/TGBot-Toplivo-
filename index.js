@@ -10,12 +10,12 @@ import { filterTownWog } from "./toolsForWog/filterTownWog.js";
 
 setInterval(async () => {
   try {
-    await runGetFuelMapOkko();
     await runGetFuelMapWog();
+    await runGetFuelMapOkko();
   } catch (e) {
     console.error(e);
   }
-}, 1000 * 60 * 30);
+}, 1000 * 60 * 32);
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 

@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 import fs from "fs";
 
 export async function runGetFuelMapOkko() {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   await page.goto("https://www.okko.ua/api/uk/fuel-map");
 
